@@ -593,6 +593,12 @@
     getState: function () { return C.cloneState(state); },
     getOut: function () { return out; },
     getChecks: function () { return out && out.ok ? out.checks.map(function (c) { return { name: c.name, pass: c.pass }; }) : []; },
-    setInput: function (id, v) { return window.__set ? window.__set(id, v) : false; }
+    setInput: function (id, v) {
+      var el = $(id);
+      if (!el) return false;
+      el.value = String(v);
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      return true;
+    }
   };
 })();
