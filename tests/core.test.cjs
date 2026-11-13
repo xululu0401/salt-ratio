@@ -938,12 +938,20 @@ test('两条无解预设给出的「只留约 N mL」都是可执行的：按它
     assert.strictEqual(o.ok, false, k + ' 应当是无解预设');
     const inf = o.errors.filter(x => x.code === 'infeasible')[0];
     assert.ok(inf, k + ' 应当报 infeasible：' + JSON.stringify(o.errors.map(x => x.code)));
+    /* 两支措辞：留量 ≥ 1 mL 时给「只留约 N mL」；留量不到 1 mL 时说明「整瓶倒掉重配」
+     * （如实记录：这一支的可行留量只有「全部」与「几乎 0」两种，中间值不存在 —— 所以措辞要分两支） */
     const m = inf.message.match(/只留约 ([\d,\.]+) mL/);
-    assert.ok(m, k + ' 要给留量：' + inf.message);
-    const keep = Number(m[1].replace(/,/g, ''));
-    assert.ok(keep >= 0 && keep < Number(s.haveVol), k + ' 留量应当小于原量：' + keep);
-    const o2 = A.compute(set(s, 'haveVol', String(keep)));
-    assert.strictEqual(o2.ok, true, k + ' 按「只留 ' + keep + ' mL」应当算得出来：' + JSON.stringify((o2.errors || []).map(x => x.code)));
-    near(A.wFromMasses(o2.haveSalt + o2.mSalt, o2.haveWater + o2.mWater), Number(s.w), k + ' 留量重算后的盐度', 1e-6);
+    if (m) {
+      const keep = Number(m[1].replace(/,/g, ''));
+      assert.ok(keep >= 1 && keep < Number(s.haveVol), k + ' 留量应当在 [1, 原量) 内：' + keep);
+      const o2 = A.compute(set(s, 'haveVol', String(keep)));
+      assert.strictEqual(o2.ok, true, k + ' 按「只留 ' + keep + ' mL」应当算得出来：' + JSON.stringify((o2.errors || []).map(x => x.code)));
+      near(A.wFromMasses(o2.haveSalt + o2.mSalt, o2.haveWater + o2.mWater), Number(s.w), k + ' 留量重算后的盐度', 1e-6);
+    } else {
+      assert.ok(/整瓶倒掉|倒掉一部分也解决不了/.test(inf.message), k + ' 没有留量时要给出替代动作：' + inf.message);
+      /* 换成清水之后应当能算（证明「另配新盐水」是对的方向） */
+      const o3 = A.compute(set(s, 'haveVol', '0'));
+      assert.strictEqual(o3.ok, true, k + ' 去掉已有盐水后应当能算：' + JSON.stringify((o3.errors || []).map(x => x.code)));
+    }
   });
 });

@@ -340,7 +340,8 @@
       keepMl2 = lo;
       /* 如果算出来「要留的量」不小于现有量，说明倒掉也解决不了（这瓶盐水整体就配不出目标浓度），
        * 这时候不能给「只留约 N mL」的建议 —— 检查过的样本里 3/41 属于这种，重算仍然无解。 */
-      var drainHelps = keepMl2 < haveVol - 1;
+      var drainHelps = keepMl2 < haveVol - 1 && keepMl2 >= 1;   /* 留量不到 1 mL 就别写成「只留约 0 mL」 */
+      var drainWorthless = keepMl2 < 1;                         /* 留下的那点连目标都配不出：整瓶都用不上 */
       /* 「至少要多大的罐子」——按可行性的两条约束分别推，只有两支都能满足时才给这条建议：
        *  · 组成约束（盐的总量）：目标浓度要求 V_l·k(w) = haveSalt，其中 k(w)=ρ(w)·w·10 是每升含盐量。
        *    所以 V_l = haveSalt ÷ k(w) × 1000（mL）。水量给不够就永远配不到 —— 这条与罐子无关，
@@ -397,7 +398,9 @@
       /* 两条可执行的修法：① 倒掉一部分（只留 keepMl2）② 换一个至少 needJarL 的罐子 */
       var optDrain = drainHelps
         ? '把已有盐水倒掉一部分，只留约 ' + fmtV(keepMl2, 0) + ' mL（其余倒掉或另作他用）'
-        : '倒掉一部分也解决不了（这瓶盐水整体就配不出目标浓度），只能整瓶倒掉重配';
+        : (drainWorthless
+          ? '这瓶盐水整体就用不上了（留下的那点连目标浓度都配不出），建议整瓶倒掉、另配新盐水'
+          : '倒掉一部分也解决不了（留下的那点仍然超量），只能整瓶倒掉重配');
       /* 罐子容积字段的上界是 SPEC 里 vol 的 max；超过它就不该建议（会填不进去、也超出真实生活尺度） */
       var volMax = F.vol.max;
       var jarUsable = needJarL !== null && isFinite(needJarL) && needJarL > 0 && needJarL <= volMax + 1e-9;
