@@ -246,7 +246,9 @@
   </p>
 
 </div>
-<script>/*CORE*/</script>
-<script>/*UI*/</script>
+<!-- 内核与界面分开成外部脚本：不要把源码内联进来。
+     内联时整份源码会成为页面的可见文本节点（在正文里能读到），也会把 index.html 撑到 100 KB。 -->
+<script src="./core.js"></script>
+<script src="./ui.js"></script>
 </body>
 </html>

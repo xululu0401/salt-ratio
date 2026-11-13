@@ -140,12 +140,12 @@
            haveVol: '0', haveW: '0', bulk: '1200', bagG: '400', bagPrice: '3', spoon: '5' }
     },
     {
-      key: 'toosalty', name: '无解：锅里剩的盐水太咸了（虚构）', note: '1 L 罐子里已有 950 mL 2 % 盐水，目标却要 24 %',
+      key: 'toosalty', name: '无解：锅里剩的盐水太咸（虚构）', note: '1 L 罐子里已有 950 mL 2 % 盐水，目标却要 24 %',
       v: { w: '24', vol: '1', vegShare: '0', vegMass: '0', vegWater: '0', headroom: '5',
            haveVol: '950', haveW: '2', bulk: '1200', bagG: '400', bagPrice: '3', spoon: '5' }
     },
     {
-      key: 'overfill', name: '无解：罐子真的装不下这些水（虚构）', note: '2 L 罐子里已有 1900 mL 2 % 盐水，目标却要 25 %',
+      key: 'overfill', name: '无解：罐子装不下这些水（虚构）', note: '2 L 罐子里已有 1900 mL 2 % 盐水，目标却要 25 %',
       v: { w: '25', vol: '2', vegShare: '0', vegMass: '0', vegWater: '0', headroom: '5',
            haveVol: '1900', haveW: '2', bulk: '1200', bagG: '400', bagPrice: '3', spoon: '5' }
     }

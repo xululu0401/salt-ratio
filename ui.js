@@ -547,7 +547,7 @@
   render(true);
 
   /* 给验收脚本一个只读入口，便于核对页面读数与引擎输出 */
-  window.__saltUi = {
+  window.__saltUi = {  /* 只读入口，给验收脚本核对页面读数与引擎输出 */
     getState: function () { return C.cloneState(state); },
     getOut: function () { return out; },
     getChecks: function () { return out && out.ok ? out.checks.map(function (c) { return { name: c.name, pass: c.pass }; }) : []; }
