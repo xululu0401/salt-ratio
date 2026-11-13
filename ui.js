@@ -439,6 +439,16 @@
     }
     lines.forEach(function (t) { y = wrapText(g, t, pad, y, W - pad * 2, 42) + 12; });
 
+    /* ── 底部固定块：先按最坏情况把高度留出来，再往回算步骤区能用多少 ──
+     * 上一版没有守卫：步骤多了会直接压到页脚的免责声明上，两段文字叠在一起看不清
+     * （本轮目检结果卡时抓到）。现在顺序反过来：先排页脚，再排步骤，必要时截断并加省略号。 */
+    var footText = '本页只算盐和水的比例与体积：不判断能不能吃、能放多久，不内置任何菜品配方；密度按线性内插、体积按加和近似。默认与内置场景全部是虚构示例。';
+    var footFont = '22px -apple-system,"PingFang SC",sans-serif';
+    var footLh = 32;
+    g.font = footFont;
+    var footH = measureText(g, footText, W - pad * 2, footLh) + 46;   /* 免责声明 + 「AI 复核」那行 */
+    var footTop = H - 96 - footH;                                    /* 固定块顶边 */
+
     y += 8;
     g.strokeStyle = '#eaeff4'; g.beginPath(); g.moveTo(pad, y); g.lineTo(W - pad, y); g.stroke();
     y += 26;
@@ -446,17 +456,47 @@
     g.font = '600 28px -apple-system,"PingFang SC",sans-serif';
     g.fillText('照这个顺序做', pad, y); y += 44;
     g.font = '25px -apple-system,"PingFang SC",sans-serif';
+    var stepLh = 36;
+    var brief = [];
     out.plan.steps.forEach(function (s) {
-      y = wrapText(g, s.no + '. ' + s.title + '：' + s.text, pad, y, W - pad * 2, 36) + 8;
+      brief.push({ h: measureText(g, s.no + '. ' + s.title + '：' + s.text, W - pad * 2, stepLh), text: s.no + '. ' + s.title + '：' + s.text });
     });
+    var room = footTop - 20 - y;                                     /* 步骤区能用多少高度 */
+    var used = 0;
+    for (var bi = 0; bi < brief.length; bi++) {
+      var need = brief[bi].h + 8;
+      if (used + need > room && bi > 0) {
+        /* 放不下的剩余步骤收成一行，明确写出还有几步（不静默丢内容） */
+        var rest = brief.length - bi;
+        var short = '（还有 ' + rest + ' 步：' + out.plan.steps.slice(bi).map(function (s) { return s.title; }).join('、') + '　—— 完整步骤看页面）';
+        g.fillStyle = '#7d8b9c';
+        wrapText(g, short, pad, y, W - pad * 2, stepLh);
+        break;
+      }
+      g.fillStyle = '#4c5a6b';
+      y = wrapText(g, brief[bi].text, pad, y, W - pad * 2, stepLh) + 8;
+      used += need;
+    }
 
+    /* 页脚：位置固定，先画一条分隔线，保证与上面内容不重叠 */
+    g.strokeStyle = '#eaeff4'; g.beginPath();
+    g.moveTo(pad, footTop - 14); g.lineTo(W - pad, footTop - 14); g.stroke();
     g.fillStyle = '#7d8b9c';
-    g.font = '22px -apple-system,"PingFang SC",sans-serif';
-    var foot = '本页只算盐和水的比例与体积：不判断能不能吃、能放多久，不内置任何菜品配方；密度按线性内插、体积按加和近似。默认与内置场景全部是虚构示例。';
-    var fy = H - 210;
-    wrapText(g, foot, pad, fy, W - pad * 2, 32);
-    g.fillText('AI 自行复核，未做人工校核。', pad, H - 118);
+    g.font = footFont;
+    var fy = wrapText(g, footText, pad, footTop, W - pad * 2, footLh);
+    g.fillText('AI 自行复核，未做人工校核。', pad, fy + 6);
     return cv;
+  }
+
+  /* 只量高度、不画：用来做布局守卫（先算清楚会不会撞到页脚，再决定画多少） */
+  function measureText(g, text, maxW, lh) {
+    var line = '', n = 0;
+    for (var i = 0; i < text.length; i++) {
+      var test = line + text[i];
+      if (g.measureText(test).width > maxW && line) { n++; line = text[i]; } else { line = test; }
+    }
+    if (line) n++;
+    return n * lh;
   }
 
   function wrapText(g, text, x, y, maxW, lh) {
