@@ -587,9 +587,12 @@
   render(true);
 
   /* 给验收脚本一个只读入口，便于核对页面读数与引擎输出 */
-  window.__saltUi = {  /* 只读入口，给验收脚本核对页面读数与引擎输出 */
+  window.__saltUi = {
+    /* 只读入口 + 一个「像用户那样改输入」的入口，给验收脚本核对页面读数与引擎输出。
+     * setInput 走的是真实 input 事件（与用户敲键盘同一条路径），不是直接改内部 state。 */
     getState: function () { return C.cloneState(state); },
     getOut: function () { return out; },
-    getChecks: function () { return out && out.ok ? out.checks.map(function (c) { return { name: c.name, pass: c.pass }; }) : []; }
+    getChecks: function () { return out && out.ok ? out.checks.map(function (c) { return { name: c.name, pass: c.pass }; }) : []; },
+    setInput: function (id, v) { return window.__set ? window.__set(id, v) : false; }
   };
 })();
