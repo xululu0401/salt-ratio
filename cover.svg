@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <rect width="1200" height="1200" fill="#f2f5f8"/>
+  <rect x="48" y="48" width="1104" height="1104" fill="#ffffff" stroke="#d5dee7"/>
+  <rect x="48" y="48" width="1104" height="16" fill="#4a6fa5"/>
+  <text x="104" y="180" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="58" font-weight="700" fill="#1b2430">那袋盐怎么配</text>
+  <text x="104" y="240" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="30" fill="#7d8b9c">腌菜、卤味：罐子里到底要下多少盐、兑多少水</text>
+  <line x1="104" y1="288" x2="1096" y2="288" stroke="#d5dee7" stroke-dasharray="8 8"/>
+  <text x="104" y="380" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="30" fill="#4c5a6b">这一罐还要下</text>
+  <text x="104" y="510" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="128" font-weight="700" fill="#a8551c">35.8 g</text>
+  <text x="104" y="600" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="30" fill="#4c5a6b">兑水</text>
+  <text x="104" y="730" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="128" font-weight="700" fill="#2f8f8a">561 mL</text>
+  <text x="104" y="812" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="28" fill="#4c5a6b">菜预计出水 50 g → 盐度约落到 5.54 %</text>
+  <text x="104" y="856" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="28" fill="#4c5a6b">一次到位请称 39 g 盐（含补上菜出的水）· 每 100 mL 液体：盐 6.26 g、水 98 g</text>
+  <line x1="104" y1="900" x2="1096" y2="900" stroke="#eaeff4"/>
+  <text x="104" y="960" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="27" fill="#7d8b9c">目标盐度 6 %</text>
+  <text x="1096" y="960" text-anchor="end" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="27" fill="#7d8b9c">罐子 1 L</text>
+  <text x="104" y="1006" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="27" fill="#7d8b9c">菜占容积 30 %</text>
+  <text x="1096" y="1006" text-anchor="end" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="27" fill="#7d8b9c">菜净重 500 g</text>
+  <text x="104" y="1052" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="27" fill="#7d8b9c">每升含盐 62.56 g</text>
+  <text x="1096" y="1052" text-anchor="end" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="27" fill="#7d8b9c">密度 1.0426 g/mL</text>
+  <text x="104" y="1104" font-family="-apple-system,"PingFang SC","Microsoft YaHei",sans-serif" font-size="23" fill="#7d8b9c">只算盐和水的比例与体积，不做安全判定 · 默认场景为虚构示例</text>
+</svg>
